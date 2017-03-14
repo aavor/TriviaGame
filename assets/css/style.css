@@ -33,9 +33,13 @@ button{
 	padding-right: 80px;
 	margin-bottom: 200px;	
 }
+.timeRemain{
+	margin-top: 40px;
+	font-size: 24px;	
+}
 
 .question{
-	margin-top: 70px;
+	margin-top: 40px;
 	font-size: 24px;
 }
 

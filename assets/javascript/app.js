@@ -1,12 +1,14 @@
 $(document).ready(function(){
 
     $(".myQuestions").hide();
-
+    $(".nextButton").hide();
 });
 
-$("button").click(function(){
+$("#startBtn").click(function(){
         $("#start").hide();
+        run();
         $(".myQuestions").show();
+        $(".nextButton").show();
     });
 
 var questions = [{
@@ -43,7 +45,8 @@ $(document).ready(function () {
 
     // On clicking next, display the next question
     $(this).find(".nextButton").on("click", function () {
-        if (!quizOver) {
+
+        if (!quizOver || number !=0) {
 
             value = $("input[type='radio']:checked").val();
 
@@ -63,15 +66,12 @@ $(document).ready(function () {
                     displayCurrentQuestion();
                 } else {
                     displayScore();
-                    //                    $(document).find(".nextButton").toggle();
-                    //                    $(document).find(".playAgainButton").toggle();
-                    // Change the text in the next button to ask if user wants to play again
                     $(document).find(".nextButton").text("Play Again?");
                     quizOver = true;
                 }
             }
         } else { // quiz is over and clicked the next button (which now displays 'Play Again?'
-            quizOver = false;
+            quizOver =  false;
             $(document).find(".nextButton").text("Next Question");
             resetQuiz();
             displayCurrentQuestion();
@@ -111,10 +111,50 @@ function resetQuiz() {
 }
 
 function displayScore() {
-    $(document).find(".myQuestions > .result").text("You scored: " + correctAnswers + " out of: " + questions.length);
-    $(document).find(".myQuestions > .result").show();
+	$(".myQuestions").hide();
+    $(document).find(".result").text("You scored: " + correctAnswers + " out of: " + questions.length);
+    $(document).find(".result").show();
 }
 
 function hideScore() {
     $(document).find(".result").hide();
 }
+
+//  Interval Demonstration Code
+    //  Set our number counter to 100.
+    var number = 61;
+    //  Variable that will hold our interval ID when we execute
+    //  the "run" function
+    var intervalId;
+    //  When the stop button gets clicked, run the stop function.
+    $("#stop").on("click", stop);
+    //  When the resume button gets clicked, execute the run function.
+    $("#resume").on("click", run);
+    //  The run function sets an interval
+    //  that runs the decrement function once a second.
+    function run() {
+      intervalId = setInterval(decrement, 1000);
+    }
+    //  The decrement function.
+    function decrement() {
+      //  Decrease number by one.
+      number--;
+      //  Show the number in the #show-number tag.
+      $(".timeRemain").html("Time Remaining: <h2> " + number + "</h2> seconds");
+      //  Once number hits zero...
+      if (number === 0) {
+        //  ...run the stop function.
+        stop();
+        displayScore();
+        $(document).find(".nextButton").text("Play Again?");
+        quizOver = true;
+        
+      }
+    }
+    //  The stop function
+    function stop() {
+      //  Clears our intervalId
+      //  We just pass the name of the interval
+      //  to the clearInterval function.
+      clearInterval(intervalId);
+    }
